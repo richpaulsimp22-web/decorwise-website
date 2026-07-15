@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Decorwise Painting & Decorating | Timaru, Temuka & Waimate</title>
+<meta name="description" content="Decorwise Painting and Decorating — trusted by South Canterbury homeowners for over 35 years. Call or text Paul today for a free quote.">
+
+<!-- ============================================================
+     DECORWISE — simplified single-page site
+     Goal: get someone to call within 20 seconds.
+     Palette: cream/white base, yellow accent, warm charcoal text
+     ============================================================ -->
+
+<style>
+  :root{
+    --black:#4a4230;
+    --black-soft:#f4eed9;
+    --yellow:#F4C41B;
+    --yellow-deep:#C9930B;
+    --cream:#FFFDF7;
+    --white:#ffffff;
+    --gray:#847d68;
+    --gray-light:#eee9d8;
+    --radius:20px;
+    --radius-sm:12px;
+    --shadow:0 10px 26px rgba(74,66,48,0.08);
+    --shadow-lg:0 18px 40px rgba(74,66,48,0.14);
+    --max:1160px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    color:var(--black);
+    background:var(--cream);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px;}
+  h1,h2,h3{font-weight:800; letter-spacing:-0.02em;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    padding:18px 30px; border-radius:999px; font-size:17px; font-weight:700;
+    border:none; transition:transform .15s ease, box-shadow .15s ease; white-space:nowrap;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--yellow); color:var(--black); box-shadow:0 8px 24px rgba(244,196,27,0.45);}
+  .btn-primary:hover{box-shadow:0 12px 30px rgba(244,196,27,0.6);}
+  .btn-dark{background:var(--black); color:var(--white);}
+  .btn-outline{background:transparent; border:2px solid var(--black); color:var(--black);}
+  .btn-block{width:100%;}
+  .btn svg{width:20px; height:20px; flex-shrink:0;}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:100; background:rgba(255,253,247,0.92);
+    backdrop-filter:blur(10px); border-bottom:1px solid rgba(74,66,48,0.08);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:var(--max); margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px;}
+  .brand .mark{
+    background:var(--black); color:var(--yellow); width:40px; height:40px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center; font-size:18px;
+  }
+  .nav-call{display:flex; align-items:center; gap:8px; font-weight:700; font-size:15px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative; padding:56px 0 44px; overflow:hidden;
+    background:linear-gradient(180deg, #FFFDF7 0%, #FBF0CE 100%);
+    text-align:center;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(244,196,27,0.35), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(244,196,27,0.18), transparent 50%);
+  }
+  .hero-inner{position:relative; z-index:2;}
+  .hero-logo{
+    width:80px; height:80px; margin:0 auto 20px; border-radius:20px; background:var(--black);
+    display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-lg);
+  }
+  .hero-logo span{font-weight:900; font-size:15px; color:var(--yellow); letter-spacing:-0.03em;}
+  .hero .business-name{font-size:15px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:10px;}
+  .hero h1{font-size:clamp(32px,7vw,50px); line-height:1.08; margin-bottom:12px;}
+  .hero p.lead{
+    font-size:clamp(15px,2.2vw,18px); color:#6b6450; max-width:460px; margin:0 auto 22px;
+  }
+  .trust-pills{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:30px;}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.7);
+    border:1px solid rgba(74,66,48,0.12); padding:8px 16px; border-radius:999px;
+    font-size:13px; font-weight:600; color:#5a5340;
+  }
+  .pill svg{width:14px; height:14px; color:var(--yellow-deep); flex-shrink:0;}
+  .hero-actions{display:flex; flex-direction:column; gap:12px; max-width:340px; margin:0 auto 18px;}
+  .hero-phone{font-size:clamp(22px,4.5vw,28px); font-weight:900;}
+  .hero-phone a{color:var(--black);}
+
+  /* ---------- Gallery ---------- */
+  .gallery-section{padding:56px 0;}
+  .gallery-heading{text-align:center; margin-bottom:30px;}
+  .gallery-heading .eyebrow{
+    display:inline-block; font-size:13px; font-weight:700; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--yellow-deep); margin-bottom:8px;
+  }
+  .gallery-heading h2{font-size:clamp(26px,5vw,36px);}
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:14px;
+  }
+  .gallery-item{
+    position:relative; border-radius:var(--radius-sm); overflow:hidden; box-shadow:var(--shadow);
+    aspect-ratio:1/1; background:linear-gradient(135deg,#f7ecc9,#f0e7cd);
+  }
+  .gallery-item .placeholder{
+    width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:6px; text-align:center; padding:14px;
+    background-image:repeating-linear-gradient(45deg, rgba(201,147,11,0.08) 0 2px, transparent 2px 14px);
+  }
+  .gallery-item .ph-icon{
+    width:38px; height:38px; border-radius:10px; background:rgba(201,147,11,0.22);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .gallery-item .ph-title{font-weight:700; font-size:13px; color:#4a4230;}
+
+  /* ---------- About ---------- */
+  .about-section{padding:20px 0 60px;}
+  .about-card{
+    max-width:680px; margin:0 auto; text-align:center; background:var(--white);
+    border-radius:var(--radius); padding:36px 28px; box-shadow:var(--shadow);
+  }
+  .about-card .eyebrow{
+    display:inline-block; font-size:13px; font-weight:700; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--yellow-deep); margin-bottom:10px;
+  }
+  .about-card p{font-size:16px; color:#5a5340; margin-bottom:12px;}
+  .about-card p:last-of-type{margin-bottom:0;}
+
+  /* ---------- Quote ---------- */
+  .quote-section{padding:0 0 60px;}
+  .quote-card{
+    max-width:560px; margin:0 auto; background:var(--white); border-radius:var(--radius);
+    padding:36px 26px; box-shadow:var(--shadow-lg); border:1px solid rgba(74,66,48,0.08);
+  }
+  .quote-card h2{font-size:clamp(24px,5vw,30px); text-align:center; margin-bottom:6px;}
+  .quote-card .sub{text-align:center; color:var(--gray); font-size:15px; margin-bottom:24px;}
+  .form-field{margin-bottom:16px;}
+  .form-field label{
+    display:block; font-size:13px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.06em; color:#8a8168; margin-bottom:7px;
+  }
+  .form-field input, .form-field select, .form-field textarea{
+    width:100%; padding:15px 16px; border-radius:14px; font-size:16px;
+    background:var(--cream); color:var(--black); border:1px solid #e3dabf;
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder{color:#a89f85;}
+  .form-field select{
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C9930B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 16px center; background-size:18px;
+  }
+  .form-actions{display:flex; flex-direction:column; gap:12px; margin-top:20px;}
+  .form-note{font-size:13px; color:var(--gray); margin-top:14px; text-align:center;}
+  .copy-row{display:none; margin-top:12px;}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--black-soft); color:#8a8168; padding:44px 0 100px; font-size:14px;}
+  footer .foot-grid{display:flex; flex-direction:column; gap:18px; align-items:center; text-align:center;}
+  footer .foot-brand{display:flex; align-items:center; gap:10px; color:var(--black); font-weight:800; font-size:17px;}
+  footer .master-badge{
+    display:flex; align-items:center; gap:10px; background:#ffffff; padding:10px 18px; border-radius:999px;
+    font-size:13px; color:#6b6450; box-shadow:var(--shadow);
+  }
+  footer hr{border:none; border-top:1px solid #e3dabf; width:100%; max-width:360px; margin:6px 0;}
+
+  /* ---------- Sticky mobile bar ---------- */
+  .sticky-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:200;
+    display:flex; gap:10px; padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(255,253,247,0.96); backdrop-filter:blur(8px);
+    box-shadow:0 -8px 24px rgba(74,66,48,0.12); border-top:1px solid #eee3c2;
+  }
+  .sticky-bar .btn{flex:1; padding:15px 12px; font-size:15px;}
+
+  @media(min-width:640px){
+    .gallery-grid{grid-template-columns:repeat(3,1fr);}
+    .hero-actions{flex-direction:row; max-width:none; justify-content:center;}
+  }
+  @media(min-width:980px){
+    .gallery-grid{grid-template-columns:repeat(4,1fr);}
+    .sticky-bar{display:none;}
+    .copy-row{display:flex;}
+  }
+  .gallery-item.photo{background:#f0ebd8;}
+  .gallery-item.photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .gallery-empty-note{grid-column:1/-1; text-align:center; color:var(--gray); font-size:14px; padding:20px 0; display:none;}
+</style>
+
+<!-- ============================================================
+     FIREBASE SETUP
+     1. Paste your Firebase project config into firebaseConfig below.
+     2. Everything else (loading photos into the gallery) works automatically.
+     See the SETUP GUIDE document for full step-by-step instructions.
+     ============================================================ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  // ===== PASTE YOUR FIREBASE CONFIG HERE (same one used in admin.html) =====
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  // ===========================================================================
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadGallery(){
+    const grid = document.getElementById('galleryGrid');
+    if(!grid) return;
+    try{
+      const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      if(snap.empty) return; // keep the static placeholders if nothing uploaded yet
+
+      grid.innerHTML = ""; // clear placeholders, real photos take over
+      snap.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement('div');
+        item.className = 'gallery-item photo';
+        item.innerHTML = `<img src="${data.url}" alt="${data.caption || 'Decorwise painting project'}" loading="lazy">`;
+        grid.appendChild(item);
+      });
+    }catch(err){
+      console.log('Gallery not loaded yet — showing placeholders instead.', err);
+    }
+  }
+
+  loadGallery();
+</script>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <nav>
+    <div class="brand">
+      <div class="mark">D</div>
+      Decorwise
+    </div>
+    <a href="tel:0366864917" class="nav-call">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      03 686 4917
+    </a>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-logo"><span>DW</span></div>
+    <div class="business-name">Decorwise Painting &amp; Decorating</div>
+    <h1>Professional Painting &amp; Decorating</h1>
+    <p class="lead">Trusted by South Canterbury homeowners for over 35 years.</p>
+    <div class="trust-pills">
+      <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>35+ Years Experience</div>
+      <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Master Painters NZ Affiliate</div>
+      <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Free No-Obligation Quotes</div>
+      <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21c-4.97-4-8-7.5-8-11a8 8 0 0 1 16 0c0 3.5-3.03 7-8 11z"/><circle cx="12" cy="10" r="3"/></svg>Timaru • Temuka • Waimate</div>
+    </div>
+    <div class="hero-actions">
+      <a href="tel:0366864917" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call Now
+      </a>
+      <a href="#quote" class="btn btn-outline">Text for a Quote</a>
+    </div>
+    <div class="hero-phone"><a href="tel:0366864917">03 686 4917</a></div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section class="gallery-section" id="gallery">
+  <div class="wrap">
+    <div class="gallery-heading">
+      <span class="eyebrow">Our Work</span>
+      <h2>See Our Work</h2>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div><div class="ph-title">Kitchen</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></div><div class="ph-title">Living Room</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M4 4v16M9 4v16M14 4v16M19 4v16"/></svg></div><div class="ph-title">Bedroom</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 21l9-15 9 15z"/></svg></div><div class="ph-title">Exterior</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 21l9-15 9 15z"/></svg></div><div class="ph-title">Villa</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 3h18v18H3z"/></svg></div><div class="ph-title">Modern Home</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M4 4v16M9 4v16M14 4v16M19 4v16"/></svg></div><div class="ph-title">Wallpaper</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></div><div class="ph-title">Feature Wall</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="ph-title">Before &amp; After</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 21h18M3 7l9-4 9 4M5 21V9m14 12V9"/></svg></div><div class="ph-title">Commercial</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 3h18v18H3z"/></svg></div><div class="ph-title">Interior</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 21h18M4 21V10l8-6 8 6v11"/></svg></div><div class="ph-title">Fence</div></div></div>
+      <div class="gallery-item"><div class="placeholder"><div class="ph-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C9930B" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div><div class="ph-title">Kitchen</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about-section">
+  <div class="wrap">
+    <div class="about-card">
+      <span class="eyebrow">About</span>
+      <p>Decorwise is a family-owned painting and decorating business proudly serving South Canterbury for over 35 years.</p>
+      <p>Known for quality workmanship, honest advice and reliable service, Paul has built his reputation through repeat customers and word-of-mouth recommendations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUOTE ================= -->
+<section class="quote-section" id="quote">
+  <div class="wrap">
+    <div class="quote-card">
+      <h2>Text for a Quote</h2>
+      <p class="sub">A few details, then we'll pre-fill the message for you.</p>
+      <form id="quoteForm">
+        <div class="form-field">
+          <label for="qName">First Name</label>
+          <input type="text" id="qName" placeholder="e.g. John" required>
+        </div>
+        <div class="form-field">
+          <label for="qPhone">Phone Number</label>
+          <input type="tel" id="qPhone" placeholder="e.g. 021 123 4567" required>
+        </div>
+        <div class="form-field">
+          <label for="qService">Choose One</label>
+          <select id="qService">
+            <option>Interior Painting</option>
+            <option>Exterior Painting</option>
+            <option>Bedroom Painting</option>
+            <option>Wallpapering</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="qMessage">Message (optional)</label>
+          <textarea id="qMessage" rows="3" placeholder="Anything else Paul should know..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="sendSms" class="btn btn-primary btn-block">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Text for a Quote
+          </button>
+        </div>
+        <div class="copy-row">
+          <button type="button" id="copyMsg" class="btn btn-outline btn-block">Copy Message</button>
+        </div>
+        <p class="form-note">Pressing send opens your messaging app with the quote request pre-filled — nothing is sent automatically.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-brand"><div class="mark" style="width:32px;height:32px;font-size:14px; background:var(--black); color:var(--yellow); border-radius:8px; display:flex; align-items:center; justify-content:center;">D</div>Decorwise Painting and Decorating</div>
+    <div class="master-badge">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#C9930B" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/></svg>
+      Master Painters New Zealand Affiliate
+    </div>
+    <div>T 03 686 4917 &nbsp;|&nbsp; E pjarsimpson@xtra.co.nz</div>
+    <div>Serving Timaru, Temuka &amp; Waimate — South Canterbury, New Zealand</div>
+    <hr>
+    <div>© <span id="year"></span> Decorwise Painting and Decorating. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- ================= STICKY MOBILE BAR ================= -->
+<div class="sticky-bar">
+  <a href="tel:0366864917" class="btn btn-primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" width="18" height="18"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Call Now
+  </a>
+  <a href="#quote" class="btn btn-dark">Text for a Quote</a>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function buildMessage(){
+    const name = document.getElementById('qName').value.trim() || '[Your Name]';
+    const phone = document.getElementById('qPhone').value.trim() || '[Your Phone]';
+    const service = document.getElementById('qService').value;
+    const message = document.getElementById('qMessage').value.trim();
+
+    let text = `Hi Paul,\n\nMy name is ${name}.\n\nMy phone number is ${phone}.\n\nI'm looking for a quote for:\n${service}`;
+    text += `\n\nAdditional details:\n${message ? message : 'None'}`;
+    text += `\n\nPlease let me know when you have time.\n\nThank you.`;
+    return text;
+  }
+
+  document.getElementById('sendSms').addEventListener('click', function(){
+    const text = encodeURIComponent(buildMessage());
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const sep = isIOS ? '&' : '?';
+    window.location.href = `sms:0273230956${sep}body=${text}`;
+  });
+
+  document.getElementById('copyMsg').addEventListener('click', function(){
+    const text = buildMessage();
+    navigator.clipboard.writeText(text).then(()=>{
+      const btn = document.getElementById('copyMsg');
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(()=>{ btn.textContent = original; }, 1800);
+    });
+  });
+</script>
+
+</body>
+</html>

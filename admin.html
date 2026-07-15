@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decorwise Admin — Gallery Manager</title>
+<meta name="robots" content="noindex, nofollow">
+
+<style>
+  :root{
+    --black:#4a4230; --yellow:#F4C41B; --yellow-deep:#C9930B;
+    --cream:#FFFDF7; --white:#ffffff; --gray:#847d68; --gray-light:#eee9d8;
+    --radius:20px; --radius-sm:12px;
+    --shadow:0 10px 26px rgba(74,66,48,0.08); --shadow-lg:0 18px 40px rgba(74,66,48,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Helvetica Neue', Arial, sans-serif; background:var(--cream); color:var(--black);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:40px 20px;
+  }
+  .card{
+    width:100%; max-width:480px; background:var(--white); border-radius:var(--radius);
+    padding:32px 26px; box-shadow:var(--shadow-lg); margin-bottom:24px;
+  }
+  h1{font-size:22px; margin-bottom:6px;}
+  .sub{color:var(--gray); font-size:14px; margin-bottom:22px;}
+  label{display:block; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#8a8168; margin-bottom:7px;}
+  input, textarea{
+    width:100%; padding:14px 16px; border-radius:12px; font-size:15px; margin-bottom:16px;
+    background:var(--cream); border:1px solid #e3dabf; color:var(--black);
+  }
+  button{
+    font-family:inherit; cursor:pointer; width:100%; padding:15px; border:none; border-radius:999px;
+    font-size:16px; font-weight:700; background:var(--yellow); color:var(--black); transition:transform .15s;
+  }
+  button:active{transform:scale(0.97);}
+  button.secondary{background:var(--gray-light); color:var(--black); margin-top:10px;}
+  button:disabled{opacity:0.5; cursor:not-allowed;}
+  .msg{font-size:14px; margin-top:12px; text-align:center;}
+  .msg.error{color:#b33;}
+  .msg.success{color:#2a7a2a;}
+  #adminPanel{display:none; width:100%; max-width:480px;}
+  .top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .top-row span{font-size:14px; color:var(--gray);}
+  .top-row button{width:auto; padding:8px 16px; font-size:13px; background:var(--gray-light);}
+  .photo-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px;}
+  .photo-item{position:relative; border-radius:var(--radius-sm); overflow:hidden; box-shadow:var(--shadow); aspect-ratio:1/1;}
+  .photo-item img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo-item .caption{position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.55); color:#fff; font-size:11px; padding:4px 8px;}
+  .photo-item .del-btn{
+    position:absolute; top:6px; right:6px; background:rgba(180,40,40,0.9); color:#fff; border:none;
+    width:26px; height:26px; border-radius:50%; font-size:14px; line-height:1; cursor:pointer;
+  }
+  .progress{font-size:13px; color:var(--gray); text-align:center; margin-top:8px;}
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN CARD ===================== -->
+<div class="card" id="loginCard">
+  <h1>Decorwise Admin</h1>
+  <p class="sub">Log in to manage the website gallery.</p>
+  <label for="email">Email</label>
+  <input type="email" id="email" placeholder="richpaulsimp22@gmail.com">
+  <label for="password">Password</label>
+  <input type="password" id="password" placeholder="Your password">
+  <button id="loginBtn">Log In</button>
+  <p class="msg" id="loginMsg"></p>
+</div>
+
+<!-- ===================== ADMIN PANEL (shown after login) ===================== -->
+<div id="adminPanel">
+  <div class="card">
+    <div class="top-row">
+      <span id="whoami"></span>
+      <button id="logoutBtn">Log Out</button>
+    </div>
+    <h1>Upload a Photo</h1>
+    <p class="sub">This photo will appear on the live website gallery instantly.</p>
+    <label for="fileInput">Choose Photo</label>
+    <input type="file" id="fileInput" accept="image/*">
+    <label for="caption">Caption (optional)</label>
+    <input type="text" id="caption" placeholder="e.g. Kitchen repaint — Timaru">
+    <button id="uploadBtn">Upload Photo</button>
+    <p class="progress" id="uploadProgress"></p>
+    <p class="msg" id="uploadMsg"></p>
+  </div>
+
+  <div class="card">
+    <h1>Current Gallery Photos</h1>
+    <p class="sub">Tap the red button to remove a photo from the website.</p>
+    <div class="photo-grid" id="photoGrid"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FIREBASE SETUP
+     Paste the SAME config object used in index.html below.
+     ============================================================ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, getDocs, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  import {
+    getStorage, ref, uploadBytes, getDownloadURL, deleteObject
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
+
+  // ===== PASTE YOUR FIREBASE CONFIG HERE (same one used in index.html) =====
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  // ===========================================================================
+
+  // Only this email is allowed to see the admin panel, even if someone else guesses a password.
+  const ALLOWED_ADMIN_EMAIL = "richpaulsimp22@gmail.com";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  const loginCard = document.getElementById('loginCard');
+  const adminPanel = document.getElementById('adminPanel');
+  const loginMsg = document.getElementById('loginMsg');
+  const uploadMsg = document.getElementById('uploadMsg');
+  const uploadProgress = document.getElementById('uploadProgress');
+  const whoami = document.getElementById('whoami');
+
+  // ---------- Login ----------
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    loginMsg.textContent = "";
+    try{
+      await signInWithEmailAndPassword(auth, email, password);
+    }catch(err){
+      loginMsg.textContent = "Login failed — check your email and password.";
+      loginMsg.className = "msg error";
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+  onAuthStateChanged(auth, (user) => {
+    if(user && user.email === ALLOWED_ADMIN_EMAIL){
+      loginCard.style.display = "none";
+      adminPanel.style.display = "block";
+      whoami.textContent = "Logged in as " + user.email;
+      loadPhotos();
+    } else if(user){
+      // Someone else's account — block them and sign out immediately.
+      loginMsg.textContent = "This account is not authorised for admin access.";
+      loginMsg.className = "msg error";
+      signOut(auth);
+    } else {
+      loginCard.style.display = "block";
+      adminPanel.style.display = "none";
+    }
+  });
+
+  // ---------- Upload ----------
+  document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const file = document.getElementById('fileInput').files[0];
+    const caption = document.getElementById('caption').value.trim();
+    uploadMsg.textContent = "";
+
+    if(!file){
+      uploadMsg.textContent = "Please choose a photo first.";
+      uploadMsg.className = "msg error";
+      return;
+    }
+
+    try{
+      uploadProgress.textContent = "Uploading...";
+      const fileRef = ref(storage, `gallery/${Date.now()}_${file.name}`);
+      await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(fileRef);
+
+      await addDoc(collection(db, "gallery"), {
+        url,
+        caption,
+        storagePath: fileRef.fullPath,
+        createdAt: serverTimestamp()
+      });
+
+      uploadProgress.textContent = "";
+      uploadMsg.textContent = "Photo uploaded! It's now live on the website.";
+      uploadMsg.className = "msg success";
+      document.getElementById('fileInput').value = "";
+      document.getElementById('caption').value = "";
+      loadPhotos();
+    }catch(err){
+      uploadProgress.textContent = "";
+      uploadMsg.textContent = "Upload failed — please try again.";
+      uploadMsg.className = "msg error";
+      console.error(err);
+    }
+  });
+
+  // ---------- Load + delete photos ----------
+  async function loadPhotos(){
+    const grid = document.getElementById('photoGrid');
+    grid.innerHTML = "Loading...";
+    const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    grid.innerHTML = "";
+
+    if(snap.empty){
+      grid.innerHTML = "<p style='color:#847d68; font-size:14px;'>No photos uploaded yet.</p>";
+      return;
+    }
+
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      const item = document.createElement('div');
+      item.className = 'photo-item';
+      item.innerHTML = `
+        <img src="${data.url}" alt="${data.caption || ''}">
+        ${data.caption ? `<div class="caption">${data.caption}</div>` : ''}
+        <button class="del-btn" title="Delete photo">✕</button>
+      `;
+      item.querySelector('.del-btn').addEventListener('click', async () => {
+        if(!confirm('Remove this photo from the website?')) return;
+        try{
+          if(data.storagePath){
+            await deleteObject(ref(storage, data.storagePath));
+          }
+          await deleteDoc(doc(db, "gallery", docSnap.id));
+          loadPhotos();
+        }catch(err){
+          alert('Could not delete photo. Please try again.');
+          console.error(err);
+        }
+      });
+      grid.appendChild(item);
+    });
+  }
+</script>
+
+</body>
+</html>
